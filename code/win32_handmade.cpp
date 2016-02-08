@@ -26,7 +26,7 @@ struct win32_offscreen_buffer
 };
 
 // Is running global state
-global_variable bool Running;
+global_variable bool GlobalRunning;
 global_variable win32_offscreen_buffer GlobalBackbuffer;
 
 struct win32_window_dimentions
@@ -129,11 +129,11 @@ Win32MainWindowCallback(HWND   Window,
         } break;
         case WM_CLOSE:
         {
-            Running = false;
+            GlobalRunning = false;
         } break;
         case WM_DESTROY:
         {
-            Running = false;
+            GlobalRunning = false;
         } break;
         case WM_ACTIVATEAPP:
         {
@@ -200,19 +200,19 @@ WinMain(
 
         if (Window)
         {
-            Running = true;
+            GlobalRunning = true;
             // start the message loop for the window
             MSG Message;
             int XOffset = 0;
             int YOffset = 0;
-            while (Running)
+            while (GlobalRunning)
             {
                 MSG Message;
                 while(PeekMessage(&Message, 0, 0, 0, PM_REMOVE))
                 {
                     if (Message.message == WM_QUIT)
                     {
-                        Running = false;
+                        GlobalRunning = false;
                     }
 
                     TranslateMessage(&Message);
