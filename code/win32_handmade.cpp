@@ -176,7 +176,7 @@ WinMain(
 
     Win32ResizeDIBSection(&GlobalBackbuffer, 1280, 720);
 
-    WindowClass.style = CS_HREDRAW|CS_VREDRAW;
+    WindowClass.style = CS_HREDRAW|CS_VREDRAW|CS_OWNDC;
     WindowClass.lpfnWndProc = Win32MainWindowCallback;
     WindowClass.hInstance = Instance;
     //WindowClass.hIcon =;
@@ -200,6 +200,7 @@ WinMain(
 
         if (Window)
         {
+            HDC DeviceContext = GetDC(Window);
             GlobalRunning = true;
             // start the message loop for the window
             MSG Message;
@@ -221,12 +222,10 @@ WinMain(
 
                 RenderWeirdGradient(GlobalBackbuffer, XOffset, YOffset);
 
-                HDC DeviceContext = GetDC(Window);
                 win32_window_dimentions Dimension = Win32GetWindowDimension(Window);
 
                 Win32DisplayBufferInWindow(DeviceContext, Dimension.Width, Dimension.Height,
                                            GlobalBackbuffer, 0, 0, Dimension.Width, Dimension.Height);
-                ReleaseDC(Window, DeviceContext);
 
                 ++XOffset;
                 ++YOffset;
